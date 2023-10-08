@@ -1,4 +1,4 @@
-package ru.sult.azamat.telegramcarservicestationbot.service;
+package ru.sult.azamat.telegramcarservicestationbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
