@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import ru.sult.azamat.telegramcarservicestationbot.enums.UserState;
 import ru.sult.azamat.telegramcarservicestationbot.keyboards.KeyboardFactory;
+import ru.sult.azamat.telegramcarservicestationbot.service.UserService;
 
 import java.util.Map;
 
@@ -17,10 +18,12 @@ public class ResponseHandler {
 
     private final SilentSender sender;
     private final Map<Long, UserState> chatStates;
+    private final UserService userService;
 
-    public ResponseHandler(SilentSender sender, DBContext db) {
+    public ResponseHandler(SilentSender sender, DBContext db, UserService userService) {
         this.sender = sender;
         chatStates = db.getMap("chatStates");
+        this.userService = userService;
     }
 
     public void replyToStart(Long chatId) {
@@ -46,6 +49,7 @@ public class ResponseHandler {
     private void replyToName(long chatId, Message message) {
         promptWithKeyboardForState(chatId, message.getText() + ", что будем ремонтировать?",
                 KeyboardFactory.getTypeOfWorks(), AWAITING_TYPE_OF_WORK);
+        userService.create(message);
     }
 
     private void replyToTypeOfWork(long chatId, Message message) {
