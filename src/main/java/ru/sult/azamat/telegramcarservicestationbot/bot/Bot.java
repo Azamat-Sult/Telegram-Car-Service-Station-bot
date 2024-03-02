@@ -14,6 +14,7 @@ import ru.sult.azamat.telegramcarservicestationbot.service.UserService;
 
 import java.util.function.BiConsumer;
 
+import static org.telegram.abilitybots.api.objects.Flag.PHOTO;
 import static org.telegram.abilitybots.api.objects.Locality.USER;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 import static org.telegram.abilitybots.api.util.AbilityUtils.getChatId;
@@ -23,7 +24,7 @@ public class Bot extends AbilityBot {
 
     public Bot(Environment environment, UserService userService) {
         super(environment.getProperty("telegram.botToken"), environment.getProperty("telegram.botUsername"));
-        responseHandler = new ResponseHandler(silent, db, userService);
+        responseHandler = new ResponseHandler(silent, db, userService, this);
         addExtensions(new HelpAbility(this));
     }
 
@@ -36,6 +37,17 @@ public class Bot extends AbilityBot {
                 .locality(USER)
                 .privacy(PUBLIC)
                 .action(ctx -> responseHandler.replyToStart(ctx.chatId()))
+                .build();
+    }
+
+    public Ability processPhoto() {
+        return Ability.builder()
+                .name(DEFAULT)
+                .flag(PHOTO)
+                .locality(USER)
+                .privacy(PUBLIC)
+                .input(0)
+                .action(ctx -> responseHandler.replyToButtons(ctx.chatId(), ctx.update().getMessage()))
                 .build();
     }
 

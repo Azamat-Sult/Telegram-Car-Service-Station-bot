@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.List;
 
+import static ru.sult.azamat.telegramcarservicestationbot.enums.TypeOfWorks.BODY;
+
 public class KeyboardFactory {
 
     private KeyboardFactory() {
@@ -14,7 +16,7 @@ public class KeyboardFactory {
     public static ReplyKeyboard getTypeOfWorks() {
         KeyboardRow row1 = new KeyboardRow();
         row1.add("Двигатель");
-        row1.add("Кузов/покраска");
+        row1.add(BODY.getDesc());
         row1.add("Ходовая");
         KeyboardRow row2 = new KeyboardRow();
         row2.add("Автомойка");
